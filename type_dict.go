@@ -76,6 +76,7 @@ func (d *dictStore) init() {
 	d.nullCount = 0
 	d.readPos = 0
 	d.size = 0
+	d.noDictMode = true
 }
 
 func (d *dictStore) assemble() []interface{} {
@@ -91,14 +92,9 @@ func (d *dictStore) assemble() []interface{} {
 }
 
 func (d *dictStore) getIndex(in interface{}, size int) int32 {
-	key := mapKey(in)
-	if idx, ok := d.indices[key]; ok {
-		return idx
-	}
 	d.valueSize += int64(size)
 	d.values = append(d.values, in)
 	idx := int32(len(d.values) - 1)
-	d.indices[key] = idx
 	return idx
 }
 
